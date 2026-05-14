@@ -1,6 +1,7 @@
 # TwoFingerMiddleClick
 
 Two finger tap -> middle click
+
 Two finger click -> passes through unchanged
 
 This app works based off of conversion, not ordinary tap detection, making it more reliable than alternatives.
