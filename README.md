@@ -24,5 +24,5 @@ Open `build/TwoFingerMiddleClick.app`, then approve the Accessibility prompt. Th
 ## Notes
 
 - Live finger counts use Apple’s private `MultitouchSupport.framework`.
-- Existing right-click events are converted to middle clicks unless they happen during a live two-finger physical click frame.
+- Existing right-click events are converted to middle clicks unless they happen during a live multi-finger physical click frame.
 - This is intentionally minimal: no login item, settings UI, or bundled icon yet.

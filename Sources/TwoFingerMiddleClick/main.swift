@@ -103,7 +103,7 @@ private final class RightClickToMiddleClickConverter {
         if type == .rightMouseDown {
             let recentTouch = touchActivityState.recentFingerCountAge()
             let shouldPassThrough = recentTouch.map {
-                $0.count == 2 && $0.age <= liveTouchPassThroughWindow
+                $0.count >= 2 && $0.age <= liveTouchPassThroughWindow
             } ?? false
 
             if shouldPassThrough {
