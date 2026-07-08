@@ -21,6 +21,13 @@ The app bundle is written to `build/TwoFingerMiddleClick.app`.
 
 Open `build/TwoFingerMiddleClick.app`, then approve the Accessibility prompt. The app posts middle clicks at the event location, so it does not warp or reposition the mouse.
 
+To run without a menu-bar item:
+
+```sh
+./build/TwoFingerMiddleClick.app/Contents/MacOS/TwoFingerMiddleClick --hide-menu-bar
+open -n build/TwoFingerMiddleClick.app --args --hide-menu-bar
+```
+
 ## Notes
 
 - Live finger counts use Apple’s private `MultitouchSupport.framework`.

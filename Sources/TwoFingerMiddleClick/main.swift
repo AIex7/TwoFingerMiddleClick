@@ -4,6 +4,18 @@ import CoreGraphics
 import Foundation
 import TouchBridge
 
+private struct AppOptions {
+    let hidesMenuBarItem: Bool
+
+    static func parse(arguments: [String]) -> AppOptions {
+        let userArguments = Set(arguments.dropFirst())
+        return AppOptions(
+            hidesMenuBarItem: userArguments.contains("--hide-menu-bar") ||
+                userArguments.contains("--no-menu-bar")
+        )
+    }
+}
+
 private final class TouchActivityState: @unchecked Sendable {
     private let lock = NSLock()
     private var lastTouchFrameTime: CFAbsoluteTime?
@@ -202,8 +214,9 @@ private final class AppDelegate: NSObject, NSApplicationDelegate {
         touchActivityState: touchActivityState
     )
     let touchFrameMonitor = TouchFrameMonitor()
+    private let options = AppOptions.parse(arguments: ProcessInfo.processInfo.arguments)
 
-    private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private var statusItem: NSStatusItem?
     private let statusMenu = NSMenu()
     private let statusMenuItem = NSMenuItem(title: "Starting...", action: nil, keyEquivalent: "")
 
@@ -214,7 +227,9 @@ private final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
-        configureMenu()
+        if !options.hidesMenuBarItem {
+            configureMenu()
+        }
         requestAccessibilityIfNeeded()
 
         if !rightClickConverter.start() {
@@ -223,9 +238,9 @@ private final class AppDelegate: NSObject, NSApplicationDelegate {
 
         do {
             try touchFrameMonitor.start()
-            statusMenuItem.title = "Right click converts to middle click"
+            updateStatus("Right click converts to middle click")
         } catch {
-            statusMenuItem.title = "Touch monitor failed"
+            updateStatus("Touch monitor failed")
             showError(error)
         }
     }
@@ -236,8 +251,10 @@ private final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func configureMenu() {
-        statusItem.button?.title = "2F"
-        statusItem.button?.toolTip = "Two Finger Middle Click"
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem = item
+        item.button?.title = "2F"
+        item.button?.toolTip = "Two Finger Middle Click"
 
         statusMenuItem.isEnabled = false
         statusMenu.addItem(statusMenuItem)
@@ -247,7 +264,15 @@ private final class AppDelegate: NSObject, NSApplicationDelegate {
             action: #selector(quit),
             keyEquivalent: "q"
         ))
-        statusItem.menu = statusMenu
+        item.menu = statusMenu
+    }
+
+    private func updateStatus(_ title: String) {
+        guard !options.hidesMenuBarItem else {
+            return
+        }
+
+        statusMenuItem.title = title
     }
 
     private func requestAccessibilityIfNeeded() {
