@@ -4,7 +4,7 @@ Two finger tap -> middle click
 
 Two finger click -> passes through unchanged as right click
 
-This app works based off of conversion that is it hands off tap detection to macOS instead of using ordinary tap detection, making it more reliable than alternatives like BetterTouchTool.
+This app works based off of conversion, that is it hands off tap detection to macOS instead of recreating trackpad tap detection, making it more reliable than alternatives like BetterTouchTool.
 
 
 ## Build
