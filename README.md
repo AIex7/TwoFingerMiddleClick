@@ -2,11 +2,10 @@
 
 Two finger tap -> middle click
 
-Two finger click -> passes through unchanged
+Two finger click -> passes through unchanged as right click
 
 This app works based off of conversion that is it hands off tap detection to macOS instead of using ordinary tap detection, making it more reliable than alternatives like BetterTouchTool.
 
-A tiny macOS menu-bar utility that converts ordinary right-click events into middle clicks without moving the pointer.
 
 ## Build
 
